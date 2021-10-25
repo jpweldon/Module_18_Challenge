@@ -49,8 +49,13 @@ import hashlib
 # @TODO
 # Create a Record Data Class that consists of the `sender`, `receiver`, and
 # `amount` attributes
-# YOUR CODE HERE
 
+@dataclass
+class Record:
+
+    sender: str
+    receiver: str
+    amount: float
 
 ################################################################################
 # Step 2:

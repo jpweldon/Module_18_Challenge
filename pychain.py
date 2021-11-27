@@ -76,9 +76,9 @@ class Block:
     # data: Any # before the change
     record: Record
     creator_id: int
-    prev_hash: str = 0
+    prev_hash: str = "0"
     timestamp: str = datetime.datetime.utcnow().strftime("%H:%M:%S")
-    nonce: str = 0
+    nonce: str = "0"
 
     def hash_block(self):
         sha = hashlib.sha256()
@@ -175,15 +175,15 @@ pychain = setup()
 
 # @TODO:
 # Add an input area where you can get a value for `sender` from the user.
-Record.sender = st.text_input("sender")
+sender = st.text_input("sender") # Record.sender = st.text_input("sender")
 
 # @TODO:
 # Add an input area where you can get a value for `receiver` from the user.
-Record.receiver = st.text_input("receiver")
+receiver = st.text_input("receiver") # Record.receiver = st.text_input("receiver")
 
 # @TODO:
 # Add an input area where you can get a value for `amount` from the user.
-Record.amount = st.number_input("amount") # , step=1., format="%.2f")
+amount = st.number_input("amount") # Record.amount = st.number_input("amount")
 
 if st.button("Add Block"):
     prev_block = pychain.chain[-1]
@@ -195,9 +195,7 @@ if st.button("Add Block"):
     # and `amount` values
     new_block = Block(
         # data=input_data, # before the change # Renamed the `data` attribute to `record` and deleted the `input_data` variable from the Streamlit interface.
-        record=Record,
-        # record=Record(Record.sender, Record.receiver, Record.amount), # attempts to resolve object issue
-        # record=Record(sender=Record.sender, receiver=Record.receiver, amount=Record.amount), # attempts to resolve object issue
+        record=Record(sender, receiver, amount),
         creator_id=42,
         prev_hash=prev_block_hash
     )
@@ -211,7 +209,7 @@ if st.button("Add Block"):
 st.markdown("## The PyChain Ledger")
 
 pychain_df = pd.DataFrame(pychain.chain)
-st.write(pychain_df)
+st.write(pychain_df.astype("str"))
 
 difficulty = st.sidebar.slider("Block Difficulty", 1, 5, 2)
 pychain.difficulty = difficulty
